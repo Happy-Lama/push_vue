@@ -5,7 +5,7 @@
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 import { getMessaging, getToken, onMessage} from 'firebase/messaging';
-
+import { ref } from 'vue';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -25,7 +25,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 const messaging = getMessaging(app);
-
+const token = ref(null)
 onMessage(messaging, (payload) => {
     console.log('Message received. ', payload);
     // ...
@@ -42,10 +42,10 @@ getToken(messaging, { vapidKey: 'BIB3GyustUsKi1cb9qe_MV-n5a1zFezDpuHMLHnJfYnO5Ki
     // getMessaging().subscribeToTopic(currentToken, 'notifications').then((reponse) => {
     //   console.log("successfully subscribed")
     // })
-    fetch(`http://127.0.0.1:8000/dashboard/subscribe/${currentToken}`).then((response) => {
-      console.log(response.json())
-    })
-
+    // fetch(`http://127.0.0.1:8000/dashboard/subscribe/${currentToken}`).then((response) => {
+    //   console.log(response.json())
+    // })
+    token.value = currentToken
   } else {
     // Show permission request UI
     console.log('No registration token available. Request permission to generate one.');
@@ -59,6 +59,7 @@ getToken(messaging, { vapidKey: 'BIB3GyustUsKi1cb9qe_MV-n5a1zFezDpuHMLHnJfYnO5Ki
 
 <template>
   HELLO WORLD
+  User Token: {{ token }}
 </template>
 
 <style scoped>
